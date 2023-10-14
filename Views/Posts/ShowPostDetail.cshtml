@@ -1,0 +1,61 @@
+@model Post
+
+@{
+    ViewData["Title"] = "Blog - " + Model.Title.ToUpper();
+}
+
+<div class="">
+    <h1 class="text-uppercase text-center mb-4">@Model.Title</h1>
+
+    <img src="~/images/@Model.Image" alt="thumbnail" width="100%" height="500px">
+
+    <div class="mt-4">
+        @Html.Raw(Model.Content.ToString())
+    </div>
+
+    <div class="d-flex flex-row-reverse fst-italic">
+        <div>
+            <span class="fw-bold">Tác giả: </span>
+            <span>@Model.CreatedBy</span>
+        </div>
+    </div>
+
+    <div class="d-flex flex-row-reverse fst-italic">
+        <div>
+            <span class="fw-bold">Ngày viết: </span>
+            <span>@Model.CreatedAt.GetDateTimeFormats('F')[0]</span>
+        </div>
+    </div>
+
+    <div class="d-flex flex-row-reverse fst-italic">
+        <div>
+            <span class="fw-bold">Lần chỉnh sửa cuối: </span>
+            <span>@Model.LastUpdatedAt.GetDateTimeFormats('F')[0]</span>
+        </div>
+    </div>
+
+    <div class="fs-5 fw-bold mt-4">
+        Các tag liên quan:
+        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
+        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
+        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
+        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
+        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
+        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
+    </div>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="mt-5">
+            <a asp-action="DeletePost" asp-route-id="@Model.Id" class="btn btn-outline-danger d-inline me-4 fw-bold fs-5">
+                Xóa bài đăng
+            </a>
+
+            <a asp-action="EditPost" asp-route-id="@Model.Id" class="btn btn-outline-dark d-inline fw-bold fs-5">
+                Chỉnh sửa bài đăng
+            </a>
+        </div>
+    }
+
+    <a asp-controller="Posts" asp-action="Index" class="btn btn-dark fs-5 mt-4">Quay lại</a>
+</div>

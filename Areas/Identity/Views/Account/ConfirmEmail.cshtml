@@ -1,0 +1,14 @@
+@{
+    ViewData["Title"] = "xác thực email";
+}
+
+<h3>Hãy vào email và click vào link chúng tôi đã gửi để xác thực.</h3>
+
+@if (ViewBag.IsSuccess == true)
+{
+    <h3 class="alert alert-success">Email đã được xác thực!</h3>
+}
+else
+{
+    <h3 class="alert alert-danger">Email chưa được xác thực! Vui lòng kiểm ra lại!</h3>
+}
