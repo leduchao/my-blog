@@ -7,6 +7,7 @@ namespace MyBlog.Models
     {
         [Key]
         public int Id { get; set; }
+
         public string Title { get; set; } = string.Empty;
 
         public string Image { get; set; } = string.Empty;
@@ -23,6 +24,6 @@ namespace MyBlog.Models
 
         public int Likes { get; set; } = 0;
 
-        public List<Tag>? Tags { get; set; }
+        public string Tags { get; set; } = string.Empty;
     }
 }

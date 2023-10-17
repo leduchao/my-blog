@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
 using MyBlog.Models;
@@ -18,7 +18,7 @@ public class PostsService : IPostsService
     }
 
     // tạo bài viết mới
-    public async Task<bool> CreatePost(PostDTO request)
+    public async Task<bool> CreatePostAsync(PostDTO request)//, string tags)
     {
         var newPost = new Post
         {
@@ -28,6 +28,7 @@ public class PostsService : IPostsService
             CreatedAt = DateTime.Now,
             LastUpdatedAt = DateTime.Now,
             CreatedBy = "Admin",
+            Tags = request.Tags
         };
 
         await UploadImageAsync(request.Image!);
@@ -39,13 +40,14 @@ public class PostsService : IPostsService
     }
 
     // xóa post theo id
-    public async Task<bool> DeletePost(int id)
+    public async Task<bool> DeletePostAsync(int id)
     {
         var post = await _context.Posts.FindAsync(id);
 
         if (post == null)
             return false;
 
+        File.Delete(@"wwwroot\images\" + post.Image);
         _context.Posts.Remove(post);
         await _context.SaveChangesAsync();
 
@@ -53,23 +55,10 @@ public class PostsService : IPostsService
     }
 
     // tìm bài viết theo id
-    public async Task<Post?> FindPostById(int id) => await _context.Posts.FindAsync(id);
-
-    // public int ToTalPage()
-    // {
-    //     var totalPosts = _context.Posts.ToList().Count;
-
-    //     if (totalPosts < _pageSize)
-    //         return 1;
-
-    //     if (totalPosts % _pageSize != 0)
-    //         return totalPosts / _pageSize + 1;
-
-    //     return totalPosts / _pageSize;
-    // }
+    public async Task<Post?> FindPostByIdAsync(int id) => await _context.Posts.FindAsync(id);
 
     // hiển thị danh sách bài viết
-    public async Task<List<Post>?> ShowPosts(int currentPage)
+    public async Task<List<Post>?> ShowPostsAsync(int currentPage)
     {
         var listPosts = await _context.Posts
             .Skip((currentPage - 1) * _pageSize)
@@ -109,26 +98,8 @@ public class PostsService : IPostsService
             return getAllPosts / _pageSize + 1;
     }
 
-    // public async Task<List<Post>?> ShowNextPagePosts(int currentPage)
-    // {
-    //     return await _context.Posts
-    //         .Skip(currentPage * _pageSize)
-    //         .Take(_pageSize)
-    //         .ToListAsync();
-    // }
-
-    // public async Task<List<Post>?> ShowLastPagePosts()
-    // {
-    //     var totalPage = ToTalPage();
-
-    //     return await _context.Posts
-    //         .Skip((totalPage - 1) * _pageSize)
-    //         .Take(_pageSize)
-    //         .ToListAsync();
-    // }
-
     // cập nhật bài viết
-    public async Task<bool> UpdatePost(int id, PostDTO request)
+    public async Task<bool> UpdatePostAsync(int id, PostDTO request)
     {
         var postUpdate = await _context.Posts.FindAsync(id);
 
@@ -141,6 +112,7 @@ public class PostsService : IPostsService
         postUpdate.Image = SetFileName(request.Image!);
         postUpdate.Content = request.Content;
         postUpdate.LastUpdatedAt = DateTime.Now;
+        postUpdate.Tags = request.Tags;
 
         File.Delete(@"wwwroot\images\" + oldImage); // xóa ảnh cũ
         await UploadImageAsync(request.Image!);

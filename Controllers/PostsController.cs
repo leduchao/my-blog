@@ -23,7 +23,7 @@ namespace MyBlog
             ViewBag.NextPage = page + 1;
             ViewBag.PreviousPage = (page == 0 || page == 1) ? 1 : page - 1;
 
-            return View(await _service.ShowPosts((int)page));
+            return View(await _service.ShowPostsAsync((int)page));
         }
 
         [Route("create-post")]
@@ -40,7 +40,7 @@ namespace MyBlog
         {
             if (ModelState.IsValid)
             {
-                var result = await _service.CreatePost(request);
+                var result = await _service.CreatePostAsync(request);
                 return RedirectToAction(nameof(Index), "Posts");
             }
 
@@ -51,7 +51,7 @@ namespace MyBlog
         [AllowAnonymous]
         public async Task<IActionResult> ShowPostDetail(int id)
         {
-            var post = await _service.FindPostById(id);
+            var post = await _service.FindPostByIdAsync(id);
 
             if (post == null)
                 return NotFound();
@@ -63,13 +63,13 @@ namespace MyBlog
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditPost(int id)
         {
-            var post = await _service.FindPostById(id);
+            var post = await _service.FindPostByIdAsync(id);
 
             if (post == null)
                 return NotFound();
 
             ViewBag.PostId = post.Id;
-            return View(new PostDTO { Title = post.Title, Content = post.Content });
+            return View(new PostDTO { Title = post.Title, Content = post.Content, Tags = post.Tags });
         }
 
         [HttpPost]
@@ -79,7 +79,7 @@ namespace MyBlog
         {
             if (ModelState.IsValid)
             {
-                var result = await _service.UpdatePost(id, request);
+                var result = await _service.UpdatePostAsync(id, request);
 
                 if (result)
                     return RedirectToAction(nameof(ShowPostDetail), new { id });
@@ -92,7 +92,7 @@ namespace MyBlog
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeletePost(int id)
         {
-            var result = await _service.DeletePost(id);
+            var result = await _service.DeletePostAsync(id);
 
             if (result)
                 return RedirectToAction(nameof(Index), "Posts");

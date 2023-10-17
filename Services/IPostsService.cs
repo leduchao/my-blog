@@ -4,17 +4,17 @@ namespace MyBlog.Services;
 
 public interface IPostsService
 {
-    Task<List<Post>?> ShowPosts(int currentPage);
+    Task<List<Post>?> ShowPostsAsync(int currentPage);
 
     //int GetAllPosts();
 
     int NumberOfPages();
 
-    Task<Post?> FindPostById(int id);
+    Task<Post?> FindPostByIdAsync(int id);
 
-    Task<bool> CreatePost(PostDTO request);
+    Task<bool> CreatePostAsync(PostDTO request);//, string tags);
 
-    Task<bool> UpdatePost(int id, PostDTO request);
+    Task<bool> UpdatePostAsync(int id, PostDTO request);
 
-    Task<bool> DeletePost(int id);
+    Task<bool> DeletePostAsync(int id);
 }

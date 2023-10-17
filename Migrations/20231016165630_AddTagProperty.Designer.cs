@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MyBlog.Data;
 
@@ -10,9 +11,11 @@ using MyBlog.Data;
 namespace MyBlog.Migrations
 {
     [DbContext(typeof(MyBlogDbContext))]
-    partial class MyBlogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231016165630_AddTagProperty")]
+    partial class AddTagProperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.11");

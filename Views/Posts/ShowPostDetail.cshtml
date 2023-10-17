@@ -34,14 +34,23 @@
         </div>
     </div>
 
-    <div class="fs-5 fw-bold mt-4">
+    <div class="fw-bold mt-4">
         Các tag liên quan:
-        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
-        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
-        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
-        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
-        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
-        <span class="fs-5 fw-normal btn btn-outline-dark">#jsdfhsf</span>
+        @if (string.IsNullOrEmpty(Model.Tags))
+        {
+            <span class="fw-normal fst-italic">Không có hashtag nào!</span>
+        }
+        else
+        {
+            @foreach (var tag in Model.Tags.Split(','))
+            {
+                if (!string.IsNullOrEmpty(tag))
+                {
+                    <a asp-controller="Posts" asp-action="SearchPost" asp-route-keyword="@tag"
+                        class="btn btn-outline-dark">#@tag</a>
+                }
+            }
+        }
     </div>
 
     @if (User.IsInRole("Admin"))

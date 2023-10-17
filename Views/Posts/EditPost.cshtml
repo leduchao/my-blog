@@ -25,10 +25,35 @@
         <span asp-validation-for="@Model.Content"></span>
     </div>
 
-    @* <div class="mb-4">
-    <label class="form-label fs-5 fw-bold" asp-for="Tags">Hashtags</label>
-    <input type="text" class="form-control" asp-for="Tags">
-    </div> *@
+    <div class="fw-bold mt-4 mb-3">
+        Các tag liên quan:
+        @if (string.IsNullOrEmpty(Model.Tags))
+        {
+            <span class="fw-normal fst-italic">Không có hashtag nào!</span>
+        }
+        else
+        {
+            @foreach (var tag in Model.Tags.Split(','))
+            {
+                if (!string.IsNullOrEmpty(tag))
+                {
+                    <a class="btn btn-outline-dark">#@tag</a>
+                }
+            }
+        }
+    </div>
+
+    <div class="mb-4">
+        <div class="mb-3">
+            <label asp-for="Tags" class="form-label fs-5 fw-bold d-inline me-2"></label>
+            <ul id="ul" class="ps-0 d-inline">
+                @* tags here *@
+            </ul>
+        </div>
+        <input type="text" class="form-control" id="input-tags" placeholder="Nhập #hashtag...">
+        <input type="hidden" asp-for="Tags" id="hidden-input">
+        <span asp-validation-for="Tags"></span>
+    </div>
 
     <button class="btn btn-outline-dark fs-5 fw-bold">Cập nhật</button>
     <a asp-controller="Posts" asp-action="ShowPostDetail" asp-route-id="@ViewBag.PostId"
@@ -42,7 +67,26 @@
             $('#summernote').summernote({
                 placeholder: "Nhập nội dung bài đăng...",
                 height: 400,
-            })
+            });
+
+            const ul = document.getElementById('ul');
+            const inputTags = document.getElementById('input-tags');
+            const inputHidden = document.getElementById('hidden-input')
+
+            inputTags.addEventListener('keydown', function (event) {
+                if (inputTags.value.trim() !== '' && event.key === ' ') {
+                    inputHidden.value += inputTags.value.replace(/\s+/g, '') + ',';
+
+                    let li = document.createElement('li');
+                    li.classList.add('d-inline', 'btn', 'btn-outline-dark', 'me-2', 'text-center');
+
+                    li.textContent = '#' + inputTags.value.replace(/\s+/g, '');
+                    ul.appendChild(li);
+
+                    inputTags.value = '';
+                    inputTags.focus();
+                }
+            });
         });
     </script>
 }

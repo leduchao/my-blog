@@ -11,7 +11,7 @@ public class PostDTO
     public string Title { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Hãy chọn hình ảnh cho bài post!")]
-    [Display(Name = "Hình ảnh minh họa")]
+    [DisplayName("Hình ảnh minh họa")]
     public IFormFile? Image { get; set; }
 
     [Required(ErrorMessage = "Bài viết cần có nội dung!")]
@@ -19,5 +19,7 @@ public class PostDTO
     [DisplayName("Nội dung bài viết")]
     public string Content { get; set; } = string.Empty;
 
-    //public List<Tag>? Tags { get; set; }
+    [Required(ErrorMessage = "Hãy nhập ít nhất 1 hashtag!")]
+    [DisplayName("Hashtags: ")]
+    public string Tags { get; set; } = string.Empty;
 }

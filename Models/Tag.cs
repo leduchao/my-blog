@@ -12,7 +12,5 @@ namespace MyBlog.Models
         [StringLength(50, ErrorMessage = "{0} có độ dài ít nhất là {2} và dài nhất là {1}!", MinimumLength = 1)]
         [DisplayName("Tên danh mục")]
         public string Name { get; set; } = string.Empty;
-
-        public List<Post>? Posts { get; set; }
     }
 }

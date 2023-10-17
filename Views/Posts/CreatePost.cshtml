@@ -1,44 +1,41 @@
+@model PostDTO
+
 @{
     ViewData["Title"] = "Tạo bài viết mới";
 }
 
-@model PostDTO
-
 <form asp-action="CreatePost" enctype="multipart/form-data">
     <div class="mb-3">
-        <label asp-for="@Model.Title" class="form-label fs-5 fw-bold"></label>
-        <input asp-for="@Model.Title" type="text" class="form-control" placeholder="Nhập tiêu đề">
-        <span asp-validation-for="@Model.Title" class="text-danger"></span>
+        <label asp-for="Title" class="form-label fs-5 fw-bold"></label>
+        <input asp-for="Title" type="text" class="form-control" placeholder="Nhập tiêu đề">
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="@Model.Image" class="form-label fs-5 fw-bold"></label>
-        <input asp-for="@Model.Image" type="file" name="Image" class="form-control" placeholder="Chọn hình ảnh">
-        <span asp-validation-for="@Model.Image" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="@Model.Content" class="form-label fs-5 fw-bold"></label>
-        <textarea asp-for="@Model.Content" id="summernote"></textarea>
-        <span asp-validation-for="@Model.Content" class="text-danger"></span>
+        <label asp-for="Image" class="form-label fs-5 fw-bold"></label>
+        <input asp-for="Image" type="file" name="Image" class="form-control" placeholder="Chọn hình ảnh">
+        <span asp-validation-for="Image" class="text-danger"></span>
     </div>
 
     <div class="mb-4">
-        <label class="form-label fs-5 fw-bold">Hashtags</label>
-        <div>
-            <ul id="ul" style="margin-bottom: 0.5rem; padding-left: 0px">
-                <li class="btn btn-secondary">#csharp</li>
-                <li class="btn btn-secondary">#csharp</li>
-                <li class="btn btn-secondary">#csharp</li>
-                <li class="btn btn-secondary">#csharp</li>
-                <li class="btn btn-secondary">#csharp</li>
-            </ul>
-            <input type="text" id="input-tags" class="form-control" placeholder="Nhập #hashtag liên quan...">
-        </div>
-        @* <span asp-validation-for="PostTags" class="text-danger"></span> *@
+        <label asp-for="Content" class="form-label fs-5 fw-bold"></label>
+        <textarea asp-for="Content" id="summernote"></textarea>
+        <span asp-validation-for="Content" class="text-danger"></span>
     </div>
 
-    <button class="btn btn-outline-dark fs-5 fw-bold">Tạo bài viết</button>
+    <div class="mb-4">
+        <div class="mb-3">
+            <label asp-for="Tags" class="form-label fs-5 fw-bold d-inline me-2"></label>
+            <ul id="ul" class="ps-0 d-inline">
+                @* tags here *@
+            </ul>
+        </div>
+        <input type="text" id="input-tags" class="form-control" placeholder="Nhập #hashtag liên quan...">
+        <input asp-for="Tags" type="hidden" id="hidden-input">
+        <span asp-validation-for="Tags" class="text-danger"></span>
+    </div>
+
+    <button id="button" class="btn btn-outline-dark fs-5 fw-bold">Tạo bài viết</button>
     <a asp-controller="Posts" asp-action="Index" class="btn btn-dark fs-5 ms-3">Hủy</a>
 </form>
 
@@ -49,25 +46,26 @@
             $('#summernote').summernote({
                 placeholder: "Nhập nội dung bài đăng...",
                 height: 400,
-            })
+            });
+
+            const ul = document.getElementById('ul');
+            const inputTags = document.getElementById('input-tags');
+            const inputHidden = document.getElementById('hidden-input')
+
+            inputTags.addEventListener('keydown', function (event) {
+                if (inputTags.value.trim() !== '' && event.key === ' ') {
+                    inputHidden.value += inputTags.value.replace(/\s+/g, '') + ',';
+
+                    let li = document.createElement('li');
+                    li.classList.add('d-inline', 'btn', 'btn-outline-dark', 'me-2', 'text-center');
+
+                    li.textContent = '#' + inputTags.value.replace(/\s+/g, '');
+                    ul.appendChild(li);
+
+                    inputTags.value = '';
+                    inputTags.focus();
+                }
+            });
         });
-
-        const ul = document.querySelector('ul');
-        const tags = [];
-        const inputTags = document.getElementById('input-tags');
-
-        inputTags.addEventListener('keydown', function (event) {
-            if (inputTags.value.trim() !== '' && event.key === ' ') {
-                tags.push(inputTags.value.trim());
-
-                let li = document.createElement('li');
-                li.textContent = '#' + inputTags.value.trim();
-                ul.appendChild(li);
-
-                inputTags.value = '';
-                inputTags.focus();
-            }
-        });
-
     </script>
 }
