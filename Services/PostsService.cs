@@ -22,7 +22,7 @@ public class PostsService : IPostsService
     {
         var newPost = new Post
         {
-            Title = request.Title,
+            Title = request.Title.ToUpper(),
             Image = SetFileName(request.Image!),
             Content = request.Content,
             CreatedAt = DateTime.Now,
@@ -108,7 +108,7 @@ public class PostsService : IPostsService
 
         string oldImage = postUpdate.Image; // đường dẫn của hình ảnh cũ
 
-        postUpdate.Title = request.Title;
+        postUpdate.Title = request.Title.ToUpper();
         postUpdate.Image = SetFileName(request.Image!);
         postUpdate.Content = request.Content;
         postUpdate.LastUpdatedAt = DateTime.Now;
@@ -134,11 +134,17 @@ public class PostsService : IPostsService
         }
     }
 
-    private static string SetFileName(IFormFile file)
+    private static string SetFileName(IFormFile file) =>
+        DateTime.Now.ToString("yyyyMMddhhmmsstt") + "_" + Path.GetFileName(file.FileName);
+
+    public async Task<List<Post>> SearchPostsAsync(string keyword)
     {
-        return DateTime.Now.ToString()
-            .Replace(" ", "")
-            .Replace("/", "")
-            .Replace(":", "") + "_" + Path.GetFileName(file.FileName);
+        var listSearchedPosts = await _context.Posts
+            .Where(p =>
+                p.Title.ToLower().Contains(keyword.ToLower()) ||
+                p.Tags.ToLower().Contains(keyword.ToLower()))
+            .ToListAsync();
+
+        return listSearchedPosts;
     }
 }

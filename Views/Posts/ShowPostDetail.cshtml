@@ -1,7 +1,7 @@
 @model Post
 
 @{
-    ViewData["Title"] = "Blog - " + Model.Title.ToUpper();
+    ViewData["Title"] = "Blog - " + Model.Title;
 }
 
 <div class="">
@@ -10,7 +10,7 @@
     <img src="~/images/@Model.Image" alt="thumbnail" width="100%" height="500px">
 
     <div class="mt-4">
-        @Html.Raw(Model.Content.ToString())
+        @Html.Raw(Model.Content)
     </div>
 
     <div class="d-flex flex-row-reverse fst-italic">
@@ -46,7 +46,7 @@
             {
                 if (!string.IsNullOrEmpty(tag))
                 {
-                    <a asp-controller="Posts" asp-action="SearchPost" asp-route-keyword="@tag"
+                    <a asp-controller="Posts" asp-action="SearchPosts" asp-route-keyword="@tag"
                         class="btn btn-outline-dark">#@tag</a>
                 }
             }
@@ -56,7 +56,8 @@
     @if (User.IsInRole("Admin"))
     {
         <div class="mt-5">
-            <a asp-action="DeletePost" asp-route-id="@Model.Id" class="btn btn-outline-danger d-inline me-4 fw-bold fs-5">
+            <a asp-action="DeletePost" asp-route-id="@Model.Id" class="btn btn-outline-danger d-inline me-4 fw-bold fs-5"
+                onclick="confirm('Bạn chắc chắn muốn xóa bài viết này?')">
                 Xóa bài đăng
             </a>
 

@@ -6,15 +6,15 @@ public interface IPostsService
 {
     Task<List<Post>?> ShowPostsAsync(int currentPage);
 
-    //int GetAllPosts();
-
     int NumberOfPages();
 
     Task<Post?> FindPostByIdAsync(int id);
 
-    Task<bool> CreatePostAsync(PostDTO request);//, string tags);
+    Task<bool> CreatePostAsync(PostDTO request);
 
     Task<bool> UpdatePostAsync(int id, PostDTO request);
 
     Task<bool> DeletePostAsync(int id);
+
+    Task<List<Post>> SearchPostsAsync(string keyword);
 }

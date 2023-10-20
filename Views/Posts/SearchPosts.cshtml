@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Danh sách tìm kiếm";
+}
+
+@model IEnumerable<Post>
+
+<h1 class="mb-4">Danh sách tìm kiếm bài viết</h1>
+
+@if (Model.Count() == 0)
+{
+    <p class="fst-italic">Không có bài viết nào chứa từ khóa "@ViewBag.Keyword"</p>
+}
+
+@foreach (var post in Model)
+{
+    <div class="card mb-3 w-100 shadow-sm">
+        <div class="d-flex">
+            <div>
+                <img src="~/images/@post.Image" width="400" height="240" class="image-fluid rounded-start" alt="...">
+            </div>
+            <div class="card-body">
+                <h2 class="card-title">@post.Title</h2>
+                @* <p class="card-text">
+            @Html.Raw(post.Content.ToString())
+            </p> *@
+                <p class="card-text"><small class="text-body-secondary fst-italic">Last updated: @post.LastUpdatedAt</small>
+                </p>
+                <a asp-controller="Posts" asp-action="ShowPostDetail" asp-route-id="@post.Id"
+                    class="btn btn-outline-dark fs-5 fw-bold">Đọc thêm</a>
+            </div>
+        </div>
+    </div>
+}
