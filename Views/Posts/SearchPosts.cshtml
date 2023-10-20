@@ -16,13 +16,10 @@
     <div class="card mb-3 w-100 shadow-sm">
         <div class="d-flex">
             <div>
-                <img src="~/images/@post.Image" width="400" height="240" class="image-fluid rounded-start" alt="...">
+                <img src="~/images/@post.Image" width="240" height="160" class="image-fluid rounded-start" alt="...">
             </div>
             <div class="card-body">
-                <h2 class="card-title">@post.Title</h2>
-                @* <p class="card-text">
-            @Html.Raw(post.Content.ToString())
-            </p> *@
+                <h5 class="card-title">@post.Title</h5>
                 <p class="card-text"><small class="text-body-secondary fst-italic">Last updated: @post.LastUpdatedAt</small>
                 </p>
                 <a asp-controller="Posts" asp-action="ShowPostDetail" asp-route-id="@post.Id"

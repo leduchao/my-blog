@@ -8,21 +8,21 @@
     <input type="hidden" name="Id" value="@ViewBag.PostId">
 
     <div class="mb-3">
-        <label asp-for="@Model.Title" class="form-label fs-5 fw-bold"></label>
-        <input asp-for="@Model.Title" type="text" class="form-control" placeholder="Nhập tiêu đề">
-        <span asp-validation-for="@Model.Title" class="text-danger"></span>
+        <label asp-for="Title" class="form-label fs-5 fw-bold"></label>
+        <input asp-for="Title" type="text" class="form-control" placeholder="Nhập tiêu đề">
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="@Model.Image" class="form-label fs-5 fw-bold"></label>
-        <input asp-for="@Model.Image" type="file" name="Image" class="form-control" placeholder="Chọn hình ảnh">
-        <span asp-validation-for="@Model.Image" class="text-danger"></span>
+        <label asp-for="Image" class="form-label fs-5 fw-bold"></label>
+        <input asp-for="Image" type="file" name="Image" class="form-control" placeholder="Chọn hình ảnh">
+        <span asp-validation-for="Image" class="text-danger"></span>
     </div>
 
     <div class="mb-4">
-        <label asp-for="@Model.Content" class="form-label fs-5 fw-bold"></label>
-        <textarea asp-for="@Model.Content" id="summernote"></textarea>
-        <span asp-validation-for="@Model.Content"></span>
+        <label asp-for="Content" class="form-label fs-5 fw-bold"></label>
+        <textarea asp-for="Content" id="summernote"></textarea>
+        <span asp-validation-for="Content"></span>
     </div>
 
     <div class="fw-bold mt-4 mb-3">
@@ -33,19 +33,21 @@
         }
         else
         {
-            @foreach (var tag in Model.Tags.Split(','))
-            {
-                if (!string.IsNullOrEmpty(tag))
+            <ul class="ps-0 d-inline">
+                @foreach (var tag in Model.Tags.Split(','))
                 {
-                    <a class="btn btn-outline-dark">#@tag</a>
+                    if (!string.IsNullOrEmpty(tag))
+                    {
+                        <li class="btn btn-outline-dark">#@tag</li>
+                    }
                 }
-            }
+            </ul>
         }
     </div>
 
     <div class="mb-4">
         <div class="mb-3">
-            <label asp-for="Tags" class="form-label fs-5 fw-bold d-inline me-2"></label>
+            <label asp-for="Tags" class="form-label fs-5 fw-bold d-inline me-1"></label>
             <ul id="ul" class="ps-0 d-inline">
                 @* tags here *@
             </ul>
