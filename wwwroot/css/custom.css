@@ -1,0 +1,11 @@
+.under-score {
+    border: 2px solid white;
+}
+
+.under-score:hover {
+    border-bottom: 2px solid black;
+}
+
+.search-post {
+    border: none;
+}

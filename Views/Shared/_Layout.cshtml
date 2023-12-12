@@ -7,52 +7,57 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyBlog.styles.css" asp-append-version="true" />
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow px-3 fixed-top"
-            style="height: 6rem;">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom fixed-top py-1">
             <div class="container-fluid">
-                <a class="navbar-brand fs-1 fw-bold pb-3" asp-area="" asp-controller="Home"
-                    asp-action="Index">MyBlog</a>
+                <a class="navbar-brand fs-2 h1 mb-0 pb-2 pt-0" asp-area="" asp-controller="Home"
+                    asp-action="Index">golbym</a>
+
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="fs-5 navbar-collapse collapse d-sm-inline-flex justify-content-between fw-bold">
+
+                <div class="fs-5 navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav">
                         <li class="nav-item ms-4">
-                            <a class="nav-link text-dark text-uppercase" asp-area="" asp-controller="Home"
-                                asp-action="Index">
-                                Trang chủ
+                            <a class="nav-link text-black px-0" asp-area="" asp-controller="Home" asp-action="Index">
+                                <span class="under-score pb-1">Trang chủ</span>
                             </a>
                         </li>
                         <li class="nav-item ms-4">
-                            <a class="nav-link text-dark text-uppercase" asp-area="" asp-controller="Posts"
-                                asp-action="Index">
-                                Bài Viết
+                            <a class="nav-link text-black px-0" asp-area="" asp-controller="Posts" asp-action="Index">
+                                <span class="under-score pb-1">Bài viết</span>
                             </a>
                         </li>
                         @if (User.IsInRole("Admin"))
                         {
                             <li class="nav-item ms-4">
-                                <a class="nav-link text-dark text-uppercase" asp-controller="Posts" asp-action="CreatePost">
-                                    Đăng bài
+                                <a class="nav-link text-black px-0" asp-controller="Posts" asp-action="CreatePost">
+                                    <span class="under-score pb-1">Đăng bài</span>
                                 </a>
                             </li>
                         }
                     </ul>
 
-                    <div class="d-flex" style="width: 560px;">
-                        <form asp-controller="Posts" asp-action="SearchPosts" method="get" class="d-flex w-100">
-                            <input type="text" name="keyword" class="form-control me-2 py-4"
-                                placeholder="Tìm kiếm tiêu đề, hashtags...">
-                            <button type="submit" class="btn btn-outline-secondary px-3" style="opacity: .8;">
+                    <div class="d-flex" style="width: 500px;">
+                        <form asp-controller="Posts" asp-action="SearchPosts" method="get"
+                            class="d-flex w-100 search-post border border-3 border-gray">
+
+                            <input type="text" name="keyword" class="form-control search-post py-2 w-100"
+                                style="border-radius: 0px;" placeholder="Tìm kiếm tiêu đề, hashtags...">
+
+                            <button class="input-group-text" type="submit"
+                                style="border-radius: 0px; border-right: none">
                                 <svg xmlns=" http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
-                                    <path
-                                        d="M10.25 2a8.25 8.25 0 0 1 6.34 13.53l5.69 5.69a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-5.69-5.69A8.25 8.25 0 1 1 10.25 2ZM3.5 10.25a6.75 6.75 0 1 0 13.5 0 6.75 6.75 0 0 0-13.5 0Z">
+                                    <path d="M10.25 2a8.25 8.25 0 0 1 6.34 13.53l5.69 5.69a.749.749 0 0 1-.326 1.275.749.749 0 0
+                                1-.734-.215l-5.69-5.69A8.25 8.25 0 1 1 10.25 2ZM3.5 10.25a6.75 6.75 0 1 0 13.5 0 6.75 6.75 0
+                                0 0-13.5 0Z">
                                     </path>
                                 </svg>
                             </button>
@@ -67,8 +72,8 @@
         </nav>
     </header>
 
-    <div class="container mb-5" style="margin-top: 8rem;">
-        <main role="main" class="pb-5">
+    <div class="container mb-5" style="margin-top: 5.5rem;">
+        <main role="main" class="pb-5" style="padding: 0 100px;">
             @RenderBody()
         </main>
     </div>
