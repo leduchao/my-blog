@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "YDfFV2oZx4VSiyKHCTtITro3NuisOaax+9JgFdHbwD96xTo9OQZlkbSJRD2dRYIi1q7B4kmPou/7+hTBIixZXQ==",
+  "dgSpecHash": "e2yJWjOWpP0ULnRdaRqgb254Tx0kQf6N1SkeAqIqOhHodvv1Mi9znXWZpKh1+6yML1DWDkm4IQ8iR0vlgFTpVg==",
   "success": true,
   "projectFilePath": "F:\\Learning\\Coding\\VisualStudioCode\\DotNetProjects\\MyBlogV2\\MyBlog.csproj",
   "expectedPackageFiles": [
@@ -65,7 +65,11 @@
     "C:\\Users\\Admin\\.nuget\\packages\\system.security.permissions\\4.5.0\\system.security.permissions.4.5.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\system.security.principal.windows\\4.5.0\\system.security.principal.windows.4.5.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\system.text.encodings.web\\7.0.0\\system.text.encodings.web.7.0.0.nupkg.sha512",
-    "C:\\Users\\Admin\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512"
+    "C:\\Users\\Admin\\.nuget\\packages\\system.text.json\\7.0.0\\system.text.json.7.0.0.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
   ],
   "logs": []
 }
