@@ -14,7 +14,7 @@ public class PostsService : IPostsService
     public PostsService(MyBlogDbContext context)
     {
         _context = context;
-        _pageSize = 6;
+        _pageSize = 12;
     }
 
     // tạo bài viết mới
@@ -108,14 +108,17 @@ public class PostsService : IPostsService
 
         string oldImage = postUpdate.Image; // đường dẫn của hình ảnh cũ
 
+        if (request.Image is not null)
+        {
+            File.Delete(@"wwwroot\images\" + oldImage); // xóa ảnh cũ
+            postUpdate.Image = SetFileName(request.Image);
+            await UploadImageAsync(request.Image);
+        }
+
         postUpdate.Title = request.Title.ToUpper();
-        postUpdate.Image = SetFileName(request.Image!);
         postUpdate.Content = request.Content;
         postUpdate.LastUpdatedAt = DateTime.Now;
         postUpdate.Tags = request.Tags;
-
-        File.Delete(@"wwwroot\images\" + oldImage); // xóa ảnh cũ
-        await UploadImageAsync(request.Image!);
 
         _context.Posts.Update(postUpdate);
         await _context.SaveChangesAsync();

@@ -3,69 +3,70 @@
 @{
     ViewData["Title"] = "Blog - " + Model.Title;
 }
+<div class="d-flex justify-content-center">
+    <div class="w-50">
+        <h3 class="text-uppercase text-center mb-3">@Model.Title</h3>
 
-<div class="">
-    <h1 class="text-uppercase text-center mb-4">@Model.Title</h1>
-
-    <img src="~/images/@Model.Image" alt="thumbnail" width="100%" height="500px">
-
-    <div class="mt-4">
-        @Html.Raw(Model.Content)
-    </div>
-
-    <div class="d-flex flex-row-reverse fst-italic">
-        <div>
-            <span class="fw-bold">Tác giả: </span>
-            <span>@Model.CreatedBy</span>
+        <div class="d-flex flex-row-reverse fst-italic">
+            <div>
+                <span class="h6">Tác giả: </span>
+                <span>@Model.CreatedBy</span>
+            </div>
         </div>
-    </div>
 
-    <div class="d-flex flex-row-reverse fst-italic">
-        <div>
-            <span class="fw-bold">Ngày viết: </span>
-            <span>@Model.CreatedAt.GetDateTimeFormats('F')[0]</span>
+        <div class="d-flex flex-row-reverse fst-italic">
+            <div>
+                <span class="h6">Ngày viết: </span>
+                <span>@Model.CreatedAt.GetDateTimeFormats('F')[0]</span>
+            </div>
         </div>
-    </div>
 
-    <div class="d-flex flex-row-reverse fst-italic">
-        <div>
-            <span class="fw-bold">Lần chỉnh sửa cuối: </span>
-            <span>@Model.LastUpdatedAt.GetDateTimeFormats('F')[0]</span>
+        <div class="d-flex flex-row-reverse fst-italic">
+            <div>
+                <span class="h6">Lần chỉnh sửa cuối: </span>
+                <span>@Model.LastUpdatedAt.GetDateTimeFormats('F')[0]</span>
+            </div>
         </div>
-    </div>
 
-    <div class="fw-bold mt-4">
-        Các tag liên quan:
-        @if (string.IsNullOrEmpty(Model.Tags))
-        {
-            <span class="fw-normal fst-italic">Không có hashtag nào!</span>
-        }
-        else
-        {
-            @foreach (var tag in Model.Tags.Split(','))
+        <img src="~/images/@Model.Image" alt="thumbnail" width="100%" height="500px" class="my-4">
+
+        <div class="fs-5">
+            @Html.Raw(Model.Content)
+        </div>
+
+        <h6 class="text-end mt-3 fs-5">
+            <span class="fst-italic">Các tag liên quan:</span>
+            @if (string.IsNullOrEmpty(Model.Tags))
             {
-                if (!string.IsNullOrEmpty(tag))
+                <span class="fw-normal fst-italic">Không có hashtag nào!</span>
+            }
+            else
+            {
+                @foreach (var tag in Model.Tags.Split(','))
                 {
-                    <a asp-controller="Posts" asp-action="SearchPosts" asp-route-keyword="@tag"
-                        class="me-1 btn btn-outline-dark">#@tag</a>
+                    if (!string.IsNullOrEmpty(tag))
+                    {
+                        <a asp-controller="Posts" asp-action="SearchPosts" asp-route-keyword="@tag" class="ms-2">#@tag</a>
+                    }
                 }
             }
+        </h6>
+
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="mt-5">
+                <a asp-action="DeletePost" asp-route-id="@Model.Id"
+                    class="btn btn-outline-danger d-inline me-4 fw-bold fs-5"
+                    onclick="return confirm('Bạn chắc chắn muốn xóa bài viết này?')">
+                    Xóa bài đăng
+                </a>
+
+                <a asp-action="EditPost" asp-route-id="@Model.Id" class="btn btn-outline-dark d-inline fw-bold fs-5">
+                    Chỉnh sửa bài đăng
+                </a>
+            </div>
         }
+
+        <a asp-controller="Posts" asp-action="Index" class="btn btn-dark fs-5 mt-4">Quay lại</a>
     </div>
-
-    @if (User.IsInRole("Admin"))
-    {
-        <div class="mt-5">
-            <a asp-action="DeletePost" asp-route-id="@Model.Id" class="btn btn-outline-danger d-inline me-4 fw-bold fs-5"
-                onclick="confirm('Bạn chắc chắn muốn xóa bài viết này?')">
-                Xóa bài đăng
-            </a>
-
-            <a asp-action="EditPost" asp-route-id="@Model.Id" class="btn btn-outline-dark d-inline fw-bold fs-5">
-                Chỉnh sửa bài đăng
-            </a>
-        </div>
-    }
-
-    <a asp-controller="Posts" asp-action="Index" class="btn btn-dark fs-5 mt-4">Quay lại</a>
 </div>

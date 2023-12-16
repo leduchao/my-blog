@@ -5,6 +5,9 @@ namespace MyBlog.Models;
 
 public class PostDTO
 {
+    [Required(ErrorMessage = "Id không phù hơp!")]
+    public int Id { get; set; }
+
     [Required(ErrorMessage = "Phải nhập tiêu đề bài viết!")]
     [StringLength(100, ErrorMessage = "{0} có độ dài ít nhất là {2} và dài nhất là {1}!", MinimumLength = 3)]
     [DisplayName("Tiêu đề")]

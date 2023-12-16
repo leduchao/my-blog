@@ -1,3 +1,7 @@
+.main-bg-color {
+    background-color: #e1f0de;
+}
+
 .under-score {
     border: 2px solid white;
 }
@@ -8,4 +12,28 @@
 
 .search-post {
     border: none;
+}
+
+.user-name:hover {
+    color: red;
+    transition: 0.3s;
+}
+
+#editor {
+    width: 635px;
+}
+
+.no-radius {
+    border-radius: 0px;
+}
+
+.radius-8 {
+    border-radius: 8px !important;
+}
+
+.description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }

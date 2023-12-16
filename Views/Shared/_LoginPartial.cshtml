@@ -4,26 +4,22 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a class="nav-link text-black h5 mb-0" style="padding-top: 12px" asp-area="Identity" asp-controller="Account"
+    <div class="fs-5 d-flex justify-content-between">
+        <a class="nav-link text-black fs-5 px-1" style="font-weight: 600;" asp-area="Identity" asp-controller="Account"
             asp-action="ShowProfile">
-            <span class="">@UserManager.GetUserName(User)</span>
+            <span class="user-name">@UserManager.GetUserName(User)</span>
         </a>
-    </li>
 
-    <li class="nav-item">
-        <a class="nav-link text-black ms-4 px-0" asp-area="Identity" asp-controller="Account" asp-action="Logout">
+        <a class="nav-link text-black px-1" asp-area="Identity" asp-controller="Account" asp-action="Logout">
             <span class="under-score pb-1">Đăng xuất</span>
         </a>
-    </li>
+    </div>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-black ms-4 px-0" asp-area="Identity" asp-controller="Account" asp-action="Login">
-            <span class="under-score pb-1">Đăng nhập</span>
-        </a>
-    </li>
+    <a class="nav-link text-black fs-5 px-1 text-center" asp-area="Identity" asp-controller="Account" asp-action="Login">
+        <span class="under-score pb-1">Đăng nhập</span>
+    </a>
     @*
 <li class="nav-item ms-4">
 <a class="nav-link" asp-area="Identity" asp-controller="Account" asp-action="Register">

@@ -68,8 +68,15 @@ public class PostsController : Controller
         if (post == null)
             return NotFound();
 
-        ViewBag.PostId = post.Id;
-        return View(new PostDTO { Title = post.Title, Content = post.Content, Tags = post.Tags });
+        var postDto = new PostDTO
+        {
+            Id = id,
+            Title = post.Title,
+            Content = post.Content,
+            Tags = post.Tags
+        };
+
+        return View(postDto);
     }
 
     [HttpPost]
@@ -85,7 +92,9 @@ public class PostsController : Controller
                 return RedirectToAction(nameof(ShowPostDetail), new { id });
         }
 
-        return RedirectToAction(nameof(EditPost), new { id });
+        //return RedirectToAction(nameof(EditPost), new { id });
+        request.Id = id;
+        return View(request);
     }
 
     [Route("delete-post")]
