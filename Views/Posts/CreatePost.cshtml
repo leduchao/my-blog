@@ -11,19 +11,16 @@
         <div class="mb-3">
             <label asp-for="Title" class="form-label fs-5 h5"></label>
             <input asp-for="Title" type="text" class="form-control" placeholder="Nhập tiêu đề">
-            <span asp-validation-for="Title" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
             <label asp-for="Image" class="form-label fs-5 h5"></label>
             <input asp-for="Image" type="file" name="Image" class="form-control" placeholder="Chọn hình ảnh">
-            <span asp-validation-for="Image" class="text-danger"></span>
         </div>
 
         <div class="mb-4">
             <label asp-for="Content" class="form-label fs-5 h5"></label>
             <textarea asp-for="Content" id="editor"></textarea>
-            <span asp-validation-for="Content" class="text-danger"></span>
         </div>
 
         <div class="mb-4">
@@ -35,7 +32,6 @@
             </div>
             <input type="text" id="input-tags" class="form-control" placeholder="Nhập #hashtag liên quan...">
             <input asp-for="Tags" type="hidden" id="hidden-input">
-            <span asp-validation-for="Tags" class="text-danger"></span>
         </div>
 
         <button id="button" class="btn btn-outline-dark fs-5 fw-bold no-radius">Tạo bài viết</button>

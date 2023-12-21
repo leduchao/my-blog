@@ -92,9 +92,9 @@ public class PostsController : Controller
                 return RedirectToAction(nameof(ShowPostDetail), new { id });
         }
 
-        //return RedirectToAction(nameof(EditPost), new { id });
         request.Id = id;
-        return View(request);
+        return RedirectToAction(nameof(EditPost), new { id });
+        //return View(request);
     }
 
     [Route("delete-post")]
