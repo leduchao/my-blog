@@ -1,4 +1,3 @@
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using MyBlog.Data;
 using MyBlog.Models;
@@ -8,33 +7,46 @@ namespace MyBlog.Services;
 public class PostsService : IPostsService
 {
     private readonly MyBlogDbContext _context;
+    private readonly IRepository<Post> _postsRepository;
 
     private readonly int _pageSize;
 
-    public PostsService(MyBlogDbContext context)
+    public PostsService(MyBlogDbContext context, IRepository<Post> postsRepository)
     {
         _context = context;
         _pageSize = 12;
+        _postsRepository = postsRepository;
     }
 
     // tạo bài viết mới
-    public async Task<bool> CreatePostAsync(PostDTO request)//, string tags)
+    public async Task<bool> CreatePostAsync(PostDTO request)
     {
-        var newPost = new Post
+        try
         {
-            Title = request.Title.ToUpper(),
-            Image = SetFileName(request.Image!),
-            Content = request.Content,
-            CreatedAt = DateTime.Now,
-            LastUpdatedAt = DateTime.Now,
-            CreatedBy = "Admin",
-            Tags = request.Tags
-        };
+            var newPost = new Post
+            {
+                Title = request.Title.ToUpper(),
+                Content = request.Content,
+                CreatedAt = DateTime.Now,
+                LastUpdatedAt = DateTime.Now,
+                CreatedBy = "Admin",
+                Tags = request.Tags
+            };
 
-        await UploadImageAsync(request.Image!);
+            if (request.Image is not null)
+            {
+                newPost.Image = SetFileName(request.Image);
+                await UploadImageAsync(request.Image);
+            }
 
-        _context.Posts.Add(newPost);
-        await _context.SaveChangesAsync();
+            _postsRepository.Add(newPost);
+            await _postsRepository.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+            return false;
+        }
 
         return true;
     }
@@ -42,75 +54,43 @@ public class PostsService : IPostsService
     // xóa post theo id
     public async Task<bool> DeletePostAsync(int id)
     {
-        var post = await _context.Posts.FindAsync(id);
+        var post = await _postsRepository.GetByIdAsync(id);
 
-        if (post == null)
+        if (post is null)
             return false;
 
         File.Delete(@"wwwroot\images\" + post.Image);
-        _context.Posts.Remove(post);
-        await _context.SaveChangesAsync();
+        _postsRepository.Delete(post);
+
+        await _postsRepository.SaveChangesAsync();
 
         return true;
     }
 
     // tìm bài viết theo id
-    public async Task<Post?> FindPostByIdAsync(int id) => await _context.Posts.FindAsync(id);
+    public async Task<Post?> FindPostByIdAsync(int id) => await _postsRepository.GetByIdAsync(id);
 
     // hiển thị danh sách bài viết
-    public async Task<List<Post>?> ShowPostsAsync(int currentPage)
+    public async Task<List<Post>?> GetAllPostsAsync()
     {
-        var listPosts = await _context.Posts
-            .Skip((currentPage - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToListAsync();
-
-        return listPosts;
-    }
-
-    public async Task<List<Post>?> ShowPreviousPosts(int currentPage)
-    {
-        var listPosts = await _context.Posts
-            .Skip((currentPage - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToListAsync();
-
-        return listPosts;
-    }
-
-    public async Task<List<Post>?> ShowNextPosts(int currentPage)
-    {
-        var listPosts = await _context.Posts
-            .Skip((currentPage - 1) * _pageSize)
-            .Take(_pageSize)
-            .ToListAsync();
-
-        return listPosts;
-    }
-
-    public int NumberOfPages()
-    {
-        int getAllPosts = _context.Posts.Count();
-
-        if (getAllPosts % _pageSize == 0)
-            return getAllPosts / _pageSize;
-        else
-            return getAllPosts / _pageSize + 1;
+        return await _postsRepository.GetAllAsync();
     }
 
     // cập nhật bài viết
     public async Task<bool> UpdatePostAsync(int id, PostDTO request)
     {
-        var postUpdate = await _context.Posts.FindAsync(id);
+        var postUpdate = await _postsRepository.GetByIdAsync(id);
 
-        if (postUpdate == null)
+        if (postUpdate is null)
             return false;
 
-        string oldImage = postUpdate.Image; // đường dẫn của hình ảnh cũ
+        string oldImage = postUpdate.Image; // old image path
 
         if (request.Image is not null)
         {
-            File.Delete(@"wwwroot\images\" + oldImage); // xóa ảnh cũ
+            File.Delete(@"wwwroot\images\" + oldImage); // delete old image
+
+            // set name and upload new image
             postUpdate.Image = SetFileName(request.Image);
             await UploadImageAsync(request.Image);
         }
@@ -120,15 +100,15 @@ public class PostsService : IPostsService
         postUpdate.LastUpdatedAt = DateTime.Now;
         postUpdate.Tags = request.Tags;
 
-        _context.Posts.Update(postUpdate);
-        await _context.SaveChangesAsync();
+        _postsRepository.Update(postUpdate);
+        await _postsRepository.SaveChangesAsync();
 
         return true;
     }
 
-    private static async Task UploadImageAsync(IFormFile file)
+    public async Task UploadImageAsync(IFormFile file)
     {
-        if (file != null)
+        if (file is not null)
         {
             var filePath = Path.Combine("wwwroot", "images", SetFileName(file));
 
@@ -137,12 +117,13 @@ public class PostsService : IPostsService
         }
     }
 
-    private static string SetFileName(IFormFile file) =>
+    public string SetFileName(IFormFile file) =>
         DateTime.Now.ToString("yyyyMMddhhmmsstt") + "_" + Path.GetFileName(file.FileName);
 
     public async Task<List<Post>> SearchPostsAsync(string keyword)
     {
-        var listSearchedPosts = await _context.Posts
+        var listSearchedPosts = await _postsRepository
+            .GetQueryable()
             .Where(p =>
                 p.Title.ToLower().Contains(keyword.ToLower()) ||
                 p.Tags.ToLower().Contains(keyword.ToLower()))

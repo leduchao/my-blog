@@ -1,5 +1,5 @@
 .main-bg-color {
-    background-color: #e1f0de;
+    background-color: #cce5ff;
 }
 
 .under-score {
@@ -36,4 +36,8 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+.hidden-link {
+    display: none;
 }

@@ -5,6 +5,7 @@ using MyBlog.Areas.Identity.Models;
 using MyBlog.Areas.Identity.Services;
 using MyBlog.Services;
 using MyBlog.Data;
+using MyBlog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,9 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options =>
 // add account service
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPostsService, PostsService>();
+
+// repository
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddDistributedMemoryCache();
 
