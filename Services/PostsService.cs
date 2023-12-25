@@ -9,12 +9,12 @@ public class PostsService : IPostsService
     private readonly MyBlogDbContext _context;
     private readonly IRepository<Post> _postsRepository;
 
-    private readonly int _pageSize;
+    //private readonly int _pageSize;
 
     public PostsService(MyBlogDbContext context, IRepository<Post> postsRepository)
     {
         _context = context;
-        _pageSize = 12;
+        //_pageSize = 12;
         _postsRepository = postsRepository;
     }
 

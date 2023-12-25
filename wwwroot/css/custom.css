@@ -41,3 +41,11 @@
 .hidden-link {
     display: none;
 }
+
+.page-item .page-link {
+    color: black !important;
+}
+
+.page-item.active .page-link {
+    color: white !important;
+}
