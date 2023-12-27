@@ -4,20 +4,18 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    <div class="fs-5 d-flex justify-content-between">
-        <a class="nav-link text-black fs-5 px-1" style="font-weight: 600;" asp-area="Identity" asp-controller="Account"
-            asp-action="ShowProfile">
-            <span class="user-name">@UserManager.GetUserName(User)</span>
-        </a>
+    <a class="nav-link text-black" style="font-weight: 500;" asp-area="Identity" asp-controller="Account"
+        asp-action="ShowProfile">
+        <span class="user-name">@UserManager.GetUserName(User)</span>
+    </a>
 
-        <a class="nav-link text-black px-1" asp-area="Identity" asp-controller="Account" asp-action="Logout">
-            <span class="under-score pb-1">Đăng xuất</span>
-        </a>
-    </div>
+    <a class="nav-link text-black" asp-area="Identity" asp-controller="Account" asp-action="Logout">
+        <span class="under-score pb-1">Đăng xuất</span>
+    </a>
 }
 else
 {
-    <a class="nav-link text-black fs-5 px-1 text-center" asp-area="Identity" asp-controller="Account" asp-action="Login">
+    <a class="nav-link text-black" asp-area="Identity" asp-controller="Account" asp-action="Login">
         <span class="under-score pb-1">Đăng nhập</span>
     </a>
     @*
