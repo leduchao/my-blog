@@ -1,3 +1,12 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Be Vietnam Pro", sans-serif !important;
+}
+
 .main-bg-color {
     background-color: #cce5ff;
 }
@@ -34,6 +43,13 @@
 .description {
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }

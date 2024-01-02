@@ -33,6 +33,35 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options =>
 
 //builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
+var googleLoginSection = builder.Configuration.GetSection("GoogleLogin");
+
+builder.Services
+    .AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = googleLoginSection.GetSection("ClientId").Value!;
+        options.ClientSecret = googleLoginSection.GetSection("ClientSecret").Value!;
+        options.CallbackPath = "/signin-google";
+    })
+    .AddFacebook(options =>
+    {
+        options.AppId = "facebook app id";
+        options.AppSecret = "facebook app secret";
+        options.CallbackPath = "/signin-facebook";
+    })
+    .AddMicrosoftAccount(options =>
+    {
+        options.ClientId = "microsoft account client id";
+        options.ClientSecret = "microsoft account client secret";
+        options.CallbackPath = "/signin-microsoft-account";
+    })
+    .AddTwitter(options =>
+    {
+        options.ConsumerKey = "twitter consumer key";
+        options.ConsumerSecret = "twitter consumer secret";
+        options.CallbackPath = "/signin-twitter";
+    });
+
 // add account service
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPostsService, PostsService>();

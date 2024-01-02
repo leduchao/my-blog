@@ -1,51 +1,89 @@
 @{
     ViewData["Title"] = "Đăng nhập";
+    //var externalLogins = ViewBag.ExternalLogins as IEnumerable<Microsoft.AspNetCore.Authentication.AuthenticationScheme>;
 }
 
 @model MyBlog.Areas.Identity.Models.LoginModel
 
-<h1 class="text-center mt-4 text-uppercase fw-bold">Đăng nhập</h1>
+<div class="w-50 pt-4 px-4 border border-secondary-subtle border-2 rounded shadow">
+    <h1 class="text-center text-uppercase fw-bold mb-3">Đăng nhập</h1>
+    @* <div asp-validation-summary="All" class="text-danger"></div> *@
 
-<div class="p-3">
-    <form class="mx-auto my-auto w-50" asp-area="Identity" asp-controller="Account" asp-action="Login">
-        <div class="form-floating mb-4">
-            <input type="email" class="form-control" asp-for="Email" placeholder="name@example.com" />
-            <label class="fw-bold" asp-for="Email">Email</label>
-            <span class="text-danger" asp-validation-for="Email"></span>
+    <form class="mx-auto my-auto" asp-area="Identity" asp-controller="Account" asp-action="Login">
+        <div class="input-group">
+            <span class="input-group-text bg-primary-subtle">
+                <i class="bi bi-envelope-at-fill"></i>
+            </span>
+            <div class="form-floating">
+                <input type="email" class="form-control" asp-for="Email" placeholder="name@example.com" />
+                <label class="fw-medium" asp-for="Email">Email</label>
+            </div>
         </div>
+        <span asp-validation-for="Email" class="text-danger"></span>
 
-        <div class="form-floating mb-4">
-            <input type="password" class="form-control" asp-for="Password" placeholder="pass" />
-            <label class="fw-bold" asp-for="Password">Mật khẩu</label>
-            <span class="text-danger" asp-validation-for="Password"></span>
+        <div class="input-group mt-4" id="show-hide-password">
+            <span class="input-group-text bg-primary-subtle"><i class="bi bi-lock-fill"></i></span>
+            <div class="form-floating">
+                <input type="password" class="form-control" asp-for="Password" placeholder="pass" />
+                <label class="fw-medium" asp-for="Password">Mật khẩu</label>
+            </div>
+            <a class="input-group-text" id="eye"><i class="bi bi-eye-fill"></i></a>
         </div>
+        <span asp-validation-for="Password" class="text-danger"></span>
 
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-        <div class="mb-4">
+        <div class="my-4 fs-5">
             <div class="d-flex justify-content-between">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" asp-for="IsRememberMe" unchecked />
                     <label class="form-check-label" asp-for="IsRememberMe">Ghi nhớ tài khoản</label>
                 </div>
 
-                <a asp-area="Identity" asp-controller="Account" asp-action="ForgotPassword" class="">
+                <a asp-area="Identity" asp-controller="Account" asp-action="ForgotPassword"
+                    class="link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
                     Quên mật khẩu?
                 </a>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-outline-primary mb-4 fs-4 text-uppercase w-100 fw-bold">
-            Let's go
+        <button type="submit" class="btn btn-primary mb-4 w-100 fw-bold fs-5">
+            Đăng nhập
         </button>
 
+        <div class="text-center fs-5 mb-4">
+            <p>Nếu chưa có tài khoản hãy
+                <a asp-area="Identity" asp-controller="Account" asp-action="Register"
+                    class="link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                    Đăng ký.
+                </a>
+            </p>
+        </div>
+
+        <hr>
+
+    </form>
+    <form asp-action="GetExternalLogin">
+        <div class="my-4 d-flex justify-content-between">
+            @if (Model.ExternalAccounts is null)
+            {
+                <p>Nothing</p>
+            }
+            else
+            {
+                <span class="fs-5">Đăng nhập bằng:</span>
+                @foreach (var provider in Model.ExternalAccounts)
+                {
+                    <input type="hidden" name="provider" value="@provider.Name" />
+                    @* <input type="hidden" name="returnUrl" value="" /> *@
+
+                    string img = provider.Name.ToLower() + ".png";
+                    <button type="submit" class="btn btn-light border border-secondary-subtle">
+                        <img src="~/logos/@img" width="30" />
+                    </button>
+                }
+            }
+        </div>
     </form>
 
-    <div class="text-center">
-        <p>Nếu chưa có tài khoản hãy
-            <a asp-area="Identity" asp-controller="Account" asp-action="Register">Đăng ký</a>.
-        </p>
-    </div>
 </div>
 
 @section Scripts {

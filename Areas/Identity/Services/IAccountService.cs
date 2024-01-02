@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using MyBlog.Areas.Identity.Models;
 
 namespace MyBlog.Areas.Identity.Services;
@@ -23,4 +25,10 @@ public interface IAccountService
     Task<BlogUser?> FindByEmailAsync(string email);
 
     Task<string> GenerateToken(BlogUser user);
+
+    Task<IEnumerable<AuthenticationScheme>> GetExternalAccountsAsync();
+
+    ChallengeResult GetExternalLogin(string provider, string redirectUrl);
+
+    Task<bool> ExternalLoginAsync();
 }

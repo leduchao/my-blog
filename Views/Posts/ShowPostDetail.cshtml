@@ -5,49 +5,51 @@
 }
 <div class="d-flex justify-content-center">
     <div class="w-75">
-        <h3 class="text-uppercase text-center mb-3">@Model.Title</h3>
+        <h1 class="text-uppercase text-center mb-3">@Model.Title</h1>
 
         <div class="d-flex flex-row-reverse fst-italic">
             <div>
-                <span class="h6">Tác giả: </span>
-                <span>@Model.CreatedBy</span>
+                @* <small class="fw-medium">Người viết: </small> *@
+                <i class="bi bi-person-fill"></i>
+                <small>@Model.CreatedBy</small>
             </div>
         </div>
 
         <div class="d-flex flex-row-reverse fst-italic">
             <div>
-                <span class="h6">Ngày viết: </span>
-                <span>@Model.CreatedAt.GetDateTimeFormats('F')[0]</span>
+                @* <small class="fw-medium">Ngày viết: </small> *@
+                @* <small>@Model.CreatedAt.GetDateTimeFormats('F')[0]</small> *@
+                <i class="bi bi-calendar2-fill me-1"></i>
+                <small>@Model.CreatedAt.ToString("dd/MM/yyyy") (ngày viết)</small>
             </div>
         </div>
 
         <div class="d-flex flex-row-reverse fst-italic">
             <div>
-                <span class="h6">Lần chỉnh sửa cuối: </span>
-                <span>@Model.LastUpdatedAt.GetDateTimeFormats('F')[0]</span>
+                @* <small class="fw-medium">Lần chỉnh sửa cuối: </small> *@
+                @* <small>@Model.LastUpdatedAt.GetDateTimeFormats('F')[0]</small> *@
+                <i class="bi bi-calendar2-fill me-1"></i>
+                <small>@Model.LastUpdatedAt.ToString("dd/MM/yyyy") (mới chỉnh sửa)</small>
             </div>
         </div>
 
-        <div class="my-4 text-center">
-            <img src="~/images/@Model.Image" alt="thumbnail" width="800" class="img-fluid">
+        <div class="my-4 text-center ">
+            <img src="~/images/@Model.Image" alt="thumbnail" width="800" class="img-fluid shadow">
         </div>
 
         <div class="">
             @Html.Raw(Model.Content)
         </div>
 
-        <div class="d-flex justify-content-between mt-5 fs-5">
-            <a asp-controller="Posts" asp-action="Index" class="h5 fs-5">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                    class="bi bi-arrow-left" style="margin-bottom: 3px" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-                        d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-                </svg>
+        <div class="d-flex justify-content-between mt-5 mb-5">
+            <a asp-controller="Posts" asp-action="Index"
+                class="fw-medium link-offset-3 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                <i class="bi bi-chevron-left"></i>
                 Quay lại
             </a>
 
             <div>
-                <span class="fst-italic h5">Các tag liên quan:</span>
+                <span class="fst-italic fw-medium">Các tag liên quan:</span>
                 @if (string.IsNullOrEmpty(Model.Tags))
                 {
                     <span class="fw-normal fst-italic">Không có hashtag nào!</span>
@@ -58,7 +60,8 @@
                     {
                         if (!string.IsNullOrEmpty(tag))
                         {
-                            <a asp-controller="Posts" asp-action="SearchPosts" asp-route-keyword="@tag" class="ms-2">#@tag</a>
+                            <a asp-controller="Posts" asp-action="SearchPosts" asp-route-keyword="@tag"
+                                class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover ms-2">#@tag</a>
                         }
                     }
                 }
@@ -68,15 +71,13 @@
         @if (User.IsInRole("Admin"))
         {
             <div class="mt-5">
-                <a asp-action="DeletePost" asp-route-id="@Model.Id" class="btn btn-danger d-inline me-4 fs-5"
-                    style="border-radius: 0px; font-weight: 500"
+                <a asp-action="DeletePost" asp-route-id="@Model.Id" class="btn btn-danger d-inline me-4 fs-5 fw-medium"
                     onclick="return confirm('Bạn chắc chắn muốn xóa bài viết này?')">
                     Xóa bài đăng
                 </a>
 
-                <a asp-action="EditPost" asp-route-id="@Model.Id" class="btn btn-primary d-inline fs-5"
-                    style="border-radius: 0px; font-weight: 500">
-                    Chỉnh sửa bài đăng
+                <a asp-action="EditPost" asp-route-id="@Model.Id" class="btn btn-primary d-inline fs-5">Chỉnh sửa bài
+                    đăng
                 </a>
             </div>
         }

@@ -5,8 +5,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+    @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" /> *@
+    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
+
     <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MyBlog.styles.css" asp-append-version="true" />
     <script src="~/ckeditor5-build-classic/ckeditor.js"></script>
@@ -20,93 +21,104 @@
 
     @* bootstrap icon *@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+
+    @* roboto, àfacad, be vietnam pro font *@
+    <link
+        href="https://fonts.googleapis.com/css2?family=Afacad:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
 </head>
 
-<body class="position-relative">
-    <nav class="navbar navbar-expand-lg bg-white fixed-top shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand text-black text-decoration-none" asp-controller="Home" asp-action="Index">
-                <h3 class="fs-2 mb-0">golbym</h3>
-            </a>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-white fixed-top shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fs-4 pt-0 fw-bold text-primary-emphasis text-decoration-none"
+                    asp-controller="Home" asp-action="Index">
+                    golbym
+                </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Index">
-                        <span class="under-score pb-1">Trang chủ</span>
-                    </a>
-
-                    <a class="nav-link text-black" asp-area="" asp-controller="Posts" asp-action="Index">
-                        <span class="under-score pb-1">Bài viết</span>
-                    </a>
-
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a class="nav-link text-black" asp-controller="Posts" asp-action="CreatePost">
-                            <span class="under-score pb-1">Đăng bài</span>
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                        <a class="nav-link text-black" asp-area="" asp-controller="Home" asp-action="Index">
+                            <span class="under-score pb-1">
+                                <i class="bi bi-house-door-fill"></i>
+                                Trang chủ
+                            </span>
                         </a>
-                    }
 
-                    <a class="nav-link text-black" asp-area="" asp-controller="Posts" asp-action="Index">
-                        <span class="under-score pb-1">Thảo luận</span>
-                    </a>
-                </div>
-                <div class="w-50" style="">
-                    <form asp-controller="Posts" asp-action="Index" method="get" class="input-group">
-                        <input type="text" name="keyword" class="form-control"
-                            placeholder="Tìm kiếm tiêu đề, hashtags...">
+                        <a class="nav-link text-black" asp-area="" asp-controller="Posts" asp-action="Index">
+                            <span class="under-score pb-1">
+                                @* <i class="bi bi-file-richtext-fill"></i> *@
+                                <i class="bi bi-card-text"></i>
+                                Bài viết
+                            </span>
+                        </a>
 
-                        <button class="input-group-text btn btn-secondary" type="submit">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
-                </div>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a class="nav-link text-black" asp-controller="Posts" asp-action="CreatePost">
+                                <span class="under-score pb-1">
+                                    @* <i class="bi bi-pencil-square"></i> *@
+                                    <i class="bi bi-pen-fill"></i>
+                                    Đăng bài
+                                </span>
+                            </a>
+                        }
 
-                <div class="navbar-nav justify-contend-end">
-                    @await Html.PartialAsync("_LoginPartial")
+                        <a class="nav-link text-black" asp-area="" asp-controller="Posts" asp-action="Index">
+                            <span class="under-score pb-1">
+                                <i class="bi bi-chat-right-text-fill"></i>
+                                Thảo luận
+                            </span>
+                        </a>
+                    </div>
+                    <div class="" style="width: 20rem">
+                        <form asp-controller="Posts" asp-action="Index" method="get" class="input-group">
+                            <input type="text" name="keyword" class="form-control"
+                                placeholder="Tìm kiếm tiêu đề, hashtags...">
+
+                            <button class="input-group-text btn btn-primary" type="submit">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="navbar-nav justify-contend-end">
+                        @await Html.PartialAsync("_LoginPartial")
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <div class="container-fluid px-3 mb-5" style="margin-top: 5.0rem;">
+    <div class="container" style="margin-top: 5rem;">
         <main role="main" class="pb-5">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="footer text-center bg-light ">
-        <div class="container text-dark fw-bold">
-            &copy; 2023 - MyBlog
+    <footer class="footer text-center bg-light border-top">
+        <div class="container text-dark fw-bold fs-5">
+            &copy; 2023 - golbym
         </div>
     </footer>
 
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
 
-    @* custom js *@
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
-
-
     @* jQuery *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- include libraries(jQuery, bootstrap) -->
-    @* <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script> *@
+    @* custom js *@
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
