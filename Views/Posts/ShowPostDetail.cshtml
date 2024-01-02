@@ -3,69 +3,85 @@
 @{
     ViewData["Title"] = "Blog - " + Model.Title;
 }
+<div class="d-flex justify-content-center">
+    <div class="w-75">
+        <h1 class="text-uppercase text-center mb-3">@Model.Title</h1>
 
-<div class="">
-    <h1 class="text-uppercase text-center mb-4">@Model.Title</h1>
-
-    <img src="~/images/@Model.Image" alt="thumbnail" width="100%" height="500px">
-
-    <div class="mt-4">
-        @Html.Raw(Model.Content)
-    </div>
-
-    <div class="d-flex flex-row-reverse fst-italic">
-        <div>
-            <span class="fw-bold">Tác giả: </span>
-            <span>@Model.CreatedBy</span>
+        <div class="d-flex flex-row-reverse fst-italic">
+            <div>
+                @* <small class="fw-medium">Người viết: </small> *@
+                <i class="bi bi-person-fill"></i>
+                <small>@Model.CreatedBy</small>
+            </div>
         </div>
-    </div>
 
-    <div class="d-flex flex-row-reverse fst-italic">
-        <div>
-            <span class="fw-bold">Ngày viết: </span>
-            <span>@Model.CreatedAt.GetDateTimeFormats('F')[0]</span>
+        <div class="d-flex flex-row-reverse fst-italic">
+            <div>
+                @* <small class="fw-medium">Ngày viết: </small> *@
+                @* <small>@Model.CreatedAt.GetDateTimeFormats('F')[0]</small> *@
+                <i class="bi bi-calendar2-fill me-1"></i>
+                <small>@Model.CreatedAt.ToString("dd/MM/yyyy") (ngày viết)</small>
+            </div>
         </div>
-    </div>
 
-    <div class="d-flex flex-row-reverse fst-italic">
-        <div>
-            <span class="fw-bold">Lần chỉnh sửa cuối: </span>
-            <span>@Model.LastUpdatedAt.GetDateTimeFormats('F')[0]</span>
+        <div class="d-flex flex-row-reverse fst-italic">
+            <div>
+                @* <small class="fw-medium">Lần chỉnh sửa cuối: </small> *@
+                @* <small>@Model.LastUpdatedAt.GetDateTimeFormats('F')[0]</small> *@
+                <i class="bi bi-calendar2-fill me-1"></i>
+                <small>@Model.LastUpdatedAt.ToString("dd/MM/yyyy") (mới chỉnh sửa)</small>
+            </div>
         </div>
-    </div>
 
-    <div class="fw-bold mt-4">
-        Các tag liên quan:
-        @if (string.IsNullOrEmpty(Model.Tags))
-        {
-            <span class="fw-normal fst-italic">Không có hashtag nào!</span>
-        }
-        else
-        {
-            @foreach (var tag in Model.Tags.Split(','))
-            {
-                if (!string.IsNullOrEmpty(tag))
+        <div class="my-4 text-center ">
+            <img src="~/images/@Model.Image" alt="thumbnail" width="800" class="img-fluid shadow">
+        </div>
+
+        <div class="">
+            @Html.Raw(Model.Content)
+        </div>
+
+        <div class="d-flex justify-content-between mt-5 mb-5">
+            <a asp-controller="Posts" asp-action="Index"
+                class="fw-medium link-offset-3 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+                <i class="bi bi-chevron-left"></i>
+                Quay lại
+            </a>
+
+            <div>
+                <span class="fst-italic fw-medium">Các tag liên quan:</span>
+                @if (string.IsNullOrEmpty(Model.Tags))
                 {
-                    <a asp-controller="Posts" asp-action="SearchPosts" asp-route-keyword="@tag"
-                        class="me-1 btn btn-outline-dark">#@tag</a>
+                    <span class="fw-normal fst-italic">Không có hashtag nào!</span>
                 }
-            }
-        }
-    </div>
-
-    @if (User.IsInRole("Admin"))
-    {
-        <div class="mt-5">
-            <a asp-action="DeletePost" asp-route-id="@Model.Id" class="btn btn-outline-danger d-inline me-4 fw-bold fs-5"
-                onclick="confirm('Bạn chắc chắn muốn xóa bài viết này?')">
-                Xóa bài đăng
-            </a>
-
-            <a asp-action="EditPost" asp-route-id="@Model.Id" class="btn btn-outline-dark d-inline fw-bold fs-5">
-                Chỉnh sửa bài đăng
-            </a>
+                else
+                {
+                    @foreach (var tag in Model.Tags.Split(','))
+                    {
+                        if (!string.IsNullOrEmpty(tag))
+                        {
+                            <a asp-controller="Posts" asp-action="SearchPosts" asp-route-keyword="@tag"
+                                class="link-underline link-underline-opacity-0 link-underline-opacity-100-hover ms-2">#@tag</a>
+                        }
+                    }
+                }
+            </div>
         </div>
-    }
 
-    <a asp-controller="Posts" asp-action="Index" class="btn btn-dark fs-5 mt-4">Quay lại</a>
+        @if (User.IsInRole("Admin"))
+        {
+            <div class="mt-5">
+                <a asp-action="DeletePost" asp-route-id="@Model.Id" class="btn btn-danger d-inline me-4 fs-5 fw-medium"
+                    onclick="return confirm('Bạn chắc chắn muốn xóa bài viết này?')">
+                    Xóa bài đăng
+                </a>
+
+                <a asp-action="EditPost" asp-route-id="@Model.Id" class="btn btn-primary d-inline fs-5">Chỉnh sửa bài
+                    đăng
+                </a>
+            </div>
+        }
+
+
+    </div>
 </div>

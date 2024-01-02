@@ -4,39 +4,61 @@
 
 @model MyBlog.Areas.Identity.Models.RegisterModel
 
-<h1 class="text-center mt-4 text-uppercase fw-bold">Đăng ký</h1>
-
-<div class="p-3">
-    <form class="mx-auto my-auto w-50" asp-area="Identity" asp-controller="Account" asp-action="Register">
-        <div class="form-floating mb-4">
-            <input type="text" class="form-control" asp-for="@Model.UserName" placeholder="username" />
-            <label class="fw-bold" asp-for="UserName">
-                Tên người dùng (viết thường, không dấu, không cách)
-            </label>
-            <span class="text-danger" asp-validation-for="UserName"></span>
+<div class="w-50 pt-4 p-4 my-4 border border-secondary-subtle border-2 rounded shadow">
+    <h1 class="text-center mb-3 text-uppercase fw-bold">Đăng ký</h1>
+    <form class="mx-auto my-auto" asp-area="Identity" asp-controller="Account" asp-action="Register">
+        <div class="input-group">
+            <span class="input-group-text bg-primary-subtle">
+                @@
+            </span>
+            <div class="form-floating">
+                <input type="text" class="form-control" asp-for="@Model.UserName" placeholder="username" />
+                <label class="fw-medium" asp-for="UserName">
+                    Tên người dùng (viết thường, không dấu, không cách)
+                </label>
+            </div>
         </div>
+        <span class="text-danger" asp-validation-for="UserName"></span>
 
-        <div class="form-floating mb-4">
-            <input type="email" class="form-control" asp-for="@Model.Email" placeholder="email" />
-            <label class="fw-bold" asp-for="Email">Email</label>
-            <span class="text-danger" asp-validation-for="Email"></span>
+        <div class="input-group mt-4">
+            <span class="input-group-text bg-primary-subtle">
+                <i class="bi bi-envelope-at-fill"></i>
+            </span>
+            <div class="form-floating">
+                <input type="email" class="form-control" asp-for="@Model.Email" placeholder="email" />
+                <label class="fw-medium" asp-for="Email">Email</label>
+            </div>
         </div>
+        <span class="text-danger" asp-validation-for="Email"></span>
 
-        <div class="form-floating mb-4">
-            <input type="password" class="form-control" asp-for="@Model.Password" placeholder="pass" />
-            <label class="fw-bold" asp-for="Password">Mật khẩu</label>
-            <span class="text-danger" asp-validation-for="Password"></span>
+        <div class="input-group mt-4" id="show-hide-password">
+            <span class="input-group-text bg-primary-subtle">
+                <i class="bi bi-lock-fill"></i>
+            </span>
+            <div class="form-floating">
+                <input type="password" class="form-control" asp-for="@Model.Password" placeholder="pass" />
+                <label class="fw-medium" asp-for="Password">Mật khẩu</label>
+            </div>
+            <a class="input-group-text" id="eye"><i class="bi bi-eye-fill"></i></i></a>
         </div>
+        <span class="text-danger" asp-validation-for="Password"></span>
 
-        <div class="form-floating mb-4">
-            <input type="password" class="form-control" asp-for="@Model.ConfirmPassword" placeholder="confirm-pass" />
-            <label class="fw-bold" asp-for="ConfirmPassword">
-                Nhập lại mật khẩu
-            </label>
-            <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+        <div class="input-group mt-4" id="show-hide-password2">
+            <span class="input-group-text bg-primary-subtle">
+                <i class="bi bi-lock-fill"></i>
+            </span>
+            <div class="form-floating">
+                <input type="password" class="form-control" asp-for="@Model.ConfirmPassword"
+                    placeholder="confirm-pass" />
+                <label class="fw-medium" asp-for="ConfirmPassword">
+                    Nhập lại mật khẩu
+                </label>
+            </div>
+            <a class="input-group-text" id="eye2"><i class="bi bi-eye-fill"></i></i></a>
         </div>
+        <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
 
-        <div class="form-check mb-4">
+        <div class="form-check mt-4 fs-5">
             <label class="form-check-label" asp-for="IsAgree">
                 Tôi đồng ý với điều khoản ứng dụng
             </label>
@@ -44,13 +66,17 @@
             <input class="form-check-input" type="checkbox" asp-for="@Model.IsAgree" checked />
         </div>
 
-        <button type="submit" class="btn btn-outline-primary mb-4 fs-4 text-uppercase w-100 fw-bold">
+        <button type="submit" class="btn btn-primary mb-4 w-100 fw-bold mt-4 fs-5">
             Đăng ký
         </button>
     </form>
 
-    <div class="text-center">
-        <p>Nếu đã có tài khoản hãy <a asp-area="Identity" asp-controller="Account" asp-action="Login">Đăng nhập</a>.</p>
+    <div class="text-center fs-5">
+        Nếu đã có tài khoản hãy
+        <a asp-area="Identity" asp-controller="Account" asp-action="Login"
+            class="link-offset-2 link-offset-2-hover link-underline link-underline-opacity-0 link-underline-opacity-100-hover">
+            Đăng nhập.
+        </a>
     </div>
 </div>
 

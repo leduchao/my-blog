@@ -5,6 +5,7 @@ using MyBlog.Areas.Identity.Models;
 using MyBlog.Areas.Identity.Services;
 using MyBlog.Services;
 using MyBlog.Data;
+using MyBlog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,16 +26,48 @@ builder.Services.AddIdentity<BlogUser, IdentityRole>(options =>
     options.Password.RequireDigit = false; // ky tu so
     options.Password.RequireUppercase = false; // ky tu in hoa
     options.Password.RequireLowercase = false; // ky tu thuong
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = false;
 })
     .AddEntityFrameworkStores<BlogUserContext>()
     .AddDefaultTokenProviders();
 
 //builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
+var googleLoginSection = builder.Configuration.GetSection("GoogleLogin");
+
+builder.Services
+    .AddAuthentication()
+    .AddGoogle(options =>
+    {
+        options.ClientId = googleLoginSection.GetSection("ClientId").Value!;
+        options.ClientSecret = googleLoginSection.GetSection("ClientSecret").Value!;
+        options.CallbackPath = "/signin-google";
+    })
+    .AddFacebook(options =>
+    {
+        options.AppId = "facebook app id";
+        options.AppSecret = "facebook app secret";
+        options.CallbackPath = "/signin-facebook";
+    })
+    .AddMicrosoftAccount(options =>
+    {
+        options.ClientId = "microsoft account client id";
+        options.ClientSecret = "microsoft account client secret";
+        options.CallbackPath = "/signin-microsoft-account";
+    })
+    .AddTwitter(options =>
+    {
+        options.ConsumerKey = "twitter consumer key";
+        options.ConsumerSecret = "twitter consumer secret";
+        options.CallbackPath = "/signin-twitter";
+    });
+
 // add account service
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPostsService, PostsService>();
+
+// repository
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 builder.Services.AddDistributedMemoryCache();
 

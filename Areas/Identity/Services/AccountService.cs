@@ -1,7 +1,10 @@
 using System.Net;
 using System.Net.Mail;
+using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using MyBlog.Areas.Identity.Models;
 
@@ -200,5 +203,92 @@ public class AccountService : IAccountService
                 }
             }
         }
+    }
+
+    public async Task<IEnumerable<AuthenticationScheme>> GetExternalAccountsAsync()
+    {
+        return await _signInManager.GetExternalAuthenticationSchemesAsync();
+    }
+
+    public ChallengeResult GetExternalLogin(string provider, string redirectUrl)
+    {
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+        var challengeResult = new ChallengeResult(provider, properties);
+
+        return challengeResult;
+    }
+
+    public async Task<bool> ExternalLoginAsync()
+    {
+        var info = await _signInManager.GetExternalLoginInfoAsync();
+
+        if (info is null)
+        {
+            return false;
+        }
+
+        var siginResult = await _signInManager.ExternalLoginSignInAsync(
+            info.LoginProvider,
+            info.ProviderKey,
+            isPersistent: false,
+            bypassTwoFactor: true);
+
+        if (siginResult.Succeeded) // exist account
+        {
+            return true;
+        }
+        else // create a new account
+        {
+            var newUser = new BlogUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                UserName = info.Principal.FindFirstValue(ClaimTypes.Email)!.Split("@")[0],
+                CreatedAt = DateTime.Now
+            };
+
+            var registerResult = await _userManager.CreateAsync(newUser);
+
+            if (registerResult.Succeeded)
+            {
+                registerResult = await _userManager.AddLoginAsync(newUser, info);
+
+                if (registerResult.Succeeded)
+                {
+                    var token = await GenerateToken(newUser);
+                    token = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(token));
+
+                    registerResult = await _userManager.ConfirmEmailAsync(newUser, token);
+
+                    if (registerResult.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(
+                            newUser,
+                            isPersistent: false,
+                            info.LoginProvider);
+
+                        return true;
+                    }
+
+                    // if (registerResult.Succeeded)
+                    // {
+                    //     var loginNewUserResult = await _signInManager.ExternalLoginSignInAsync(
+                    //         info.LoginProvider,
+                    //         info.ProviderKey,
+                    //         isPersistent: false,
+                    //         bypassTwoFactor: true
+                    //     );
+
+                    //     //await _signInManager.SignInAsync(newUser, isPersistent: false, info.LoginProvider);
+
+                    //     return loginNewUserResult.Succeeded;
+                    // }
+                }
+
+            }
+        }
+
+        return false;
     }
 }

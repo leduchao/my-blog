@@ -9,21 +9,36 @@ namespace MyBlog;
 public class PostsController : Controller
 {
     private readonly IPostsService _service;
+    private readonly IRepository<Post> _postsRepository;
 
-    public PostsController(IPostsService service)
+    public PostsController(
+        IPostsService service,
+        IRepository<Post> postsRepository)
     {
         _service = service;
+        _postsRepository = postsRepository;
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index(int? page)
+    public async Task<IActionResult> Index(int page, string keyword)
     {
-        page ??= 1;
-        ViewBag.TotalPages = _service.NumberOfPages();
-        ViewBag.NextPage = page + 1;
-        ViewBag.PreviousPage = (page == 0 || page == 1) ? 1 : page - 1;
+        if (page < 1) page = 1;
 
-        return View(await _service.ShowPostsAsync((int)page));
+        var posts = await _service.GetAllPostsAsync();
+        posts ??= new List<Post>();
+
+        if (!string.IsNullOrEmpty(keyword))
+        {
+            posts = await _service.SearchPostsAsync(keyword);
+        }
+
+        var pagination = new Pagination(posts, page, 12);
+        var paginatedList = pagination.CreatePaginatedList(posts);
+
+        ViewBag.Pagination = pagination;
+        ViewBag.Keyword = keyword;
+
+        return View(paginatedList);
     }
 
     [Route("create-post")]
@@ -68,8 +83,15 @@ public class PostsController : Controller
         if (post == null)
             return NotFound();
 
-        ViewBag.PostId = post.Id;
-        return View(new PostDTO { Title = post.Title, Content = post.Content, Tags = post.Tags });
+        var postDto = new PostDTO
+        {
+            Id = id,
+            Title = post.Title,
+            Content = post.Content,
+            Tags = post.Tags
+        };
+
+        return View(postDto);
     }
 
     [HttpPost]
@@ -85,7 +107,9 @@ public class PostsController : Controller
                 return RedirectToAction(nameof(ShowPostDetail), new { id });
         }
 
+        request.Id = id;
         return RedirectToAction(nameof(EditPost), new { id });
+        //return View(request);
     }
 
     [Route("delete-post")]

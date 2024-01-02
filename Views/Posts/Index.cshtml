@@ -1,32 +1,35 @@
 @{
     ViewData["Title"] = "Bài viết";
+    var pagination = ViewBag.Pagination as Pagination;
+    var keyword = ViewBag.Keyword as string;
 }
 
 @model IEnumerable<Post>
 
-<h2 class="mb-4">Bài viết mới nhất</h2>
-
-<div class="row">
+<div class="row g-4">
     @if (@Model.Count<Post>() == 0)
     {
-        <h5 class="fst-italic">Không có bài viết nào!</h5>
+        <span class="fst-italic">Không có bài viết nào!</span>
     }
     else
     {
         @foreach (var post in @Model)
         {
-            <div class="col-4 mb-4">
-                <div class="card shadow-sm" style="height: 25rem;">
-                    <img src="~/images/@post.Image" class="card-img-top" width="300" height="200">
+            <div class="col-3 col-6-md col-sm">
+                <div class="card shadow-sm" style="width: 15rem">
+                    <img src="~/images/@post.Image" class="card-img-top" style="height: 11rem">
 
                     <div class="card-body">
-                        <p>@post.CreatedAt</p>
+                        <p class="fw-medium card-title">@post.Title</p>
 
-                        <h5 class="card-title text-uppercase pb-3">@post.Title</h5>
+                        <div class="card-text description mb-3">
+                            <small>@Html.Raw(post.Content)</small>
+                        </div>
 
-                        <a class="btn btn-outline-dark w-100 fw-bold fs-5" asp-controller="Posts" asp-action="ShowPostDetail"
-                            asp-route-id="@post.Id">
-                            Đọc Thêm
+                        <a class="fw-medium link-offset-3 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-100-hover"
+                            asp-controller="Posts" asp-action="ShowPostDetail" asp-route-id="@post.Id">
+                            Đọc thêm
+                            <i class="bi bi-chevron-right"></i>
                         </a>
                     </div>
                 </div>
@@ -34,37 +37,39 @@
         }
 
         <nav aria-label="Page navigation example" class="mt-4">
-            <ul class="pagination pagination-lg justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-page="1"
-                        aria-label="FirstPage">
+            <ul class="pagination justify-content-center">
+                <li class="page-item @(pagination!.CurrentPage == 1 ? "hidden-link" : "")">
+                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-keyword="@keyword"
+                        asp-route-page="1" aria-label="FirstPage">
                         <span aria-hidden="true" class="text-dark">Trang đầu</span>
                     </a>
                 </li>
 
-                <li class="page-item">
-                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-page="@ViewBag.PreviousPage"
-                        aria-label="Previous">
+                <li class="page-item @(pagination!.HasPreviousPage ? "" : "hidden-link")">
+                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-keyword="@keyword"
+                        asp-route-page="@(pagination.CurrentPage - 1)" aria-label="Previous">
                         <span aria-hidden="true" class="text-dark">&laquo;</span>
                     </a>
                 </li>
 
-                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                @for (int i = 1; i <= pagination.TotalPages; i++)
                 {
-                    <li class="page-item">
-                        <a class="page-link text-dark" asp-controller="Posts" asp-action="Index" asp-route-page="@i">@i</a>
+                    <li class="page-item @(pagination.CurrentPage == i ? "active" : "")">
+                        <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-keyword="@keyword"
+                            asp-route-page="@i">@i</a>
                     </li>
                 }
 
-                <li class="page-item">
-                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-page="@ViewBag.NextPage"
-                        aria-label="Next">
+                <li class="page-item @(pagination!.HasNextPage ? "" : "hidden-link")">
+                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-keyword="@keyword"
+                        asp-route-page="@(pagination.CurrentPage + 1)" aria-label="Next">
                         <span aria-hidden="true" class="text-dark">&raquo;</span>
                     </a>
                 </li>
 
-                <li class="page-item">
-                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-page="" aria-label="LastPage">
+                <li class="page-item @(pagination!.TotalPages != pagination!.CurrentPage ? "" : "hidden-link")">
+                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-keyword="@keyword"
+                        asp-route-page="@pagination.TotalPages" aria-label="LastPage">
                         <span aria-hidden="true" class="text-dark">Trang cuối</span>
                     </a>
                 </li>

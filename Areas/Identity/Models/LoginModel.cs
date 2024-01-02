@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace MyBlog.Areas.Identity.Models;
 
@@ -15,4 +16,6 @@ public class LoginModel
     public string? Password { get; set; }
 
     public bool IsRememberMe { get; set; }
+
+    public IEnumerable<AuthenticationScheme>? ExternalAccounts { get; set; }
 }

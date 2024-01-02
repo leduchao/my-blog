@@ -1,0 +1,67 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-family: "Be Vietnam Pro", sans-serif !important;
+}
+
+.main-bg-color {
+    background-color: #cce5ff;
+}
+
+.under-score {
+    border: 2px solid white;
+}
+
+.under-score:hover {
+    border-bottom: 2px solid black;
+}
+
+.search-post {
+    border: none;
+}
+
+.user-name:hover {
+    color: red;
+    transition: 0.3s;
+}
+
+#editor {
+    width: 635px;
+}
+
+.no-radius {
+    border-radius: 0px;
+}
+
+.radius-8 {
+    border-radius: 8px !important;
+}
+
+.description {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.hidden-link {
+    display: none;
+}
+
+.page-link {
+    color: black !important;
+}
+
+.page-item.active .page-link {
+    color: white !important;
+}

@@ -24,7 +24,15 @@ public class AccountController : Controller
     public async Task<IActionResult> Login()
     {
         await _service.Logout();
-        return View();
+
+        var loginModel = new LoginModel
+        {
+            ExternalAccounts = await _service.GetExternalAccountsAsync()
+        };
+
+        //ViewBag.ExternalLogins = await _service.GetExternalAuthenticationSchemesAsync();
+
+        return View(loginModel);
     }
 
     [HttpPost]
@@ -49,6 +57,39 @@ public class AccountController : Controller
                 return View(model);
             }
         }
+        return View();
+    }
+
+    [HttpPost]
+    [Route("get-external-login")]
+    public IActionResult GetExternalLogin(string provider)
+    {
+        var redirectUrl = Url.ActionLink("ExternalLogin", "Account", new { area = "Identity" }, Request.Scheme);
+
+        if (!string.IsNullOrEmpty(redirectUrl))
+        {
+            var challengResult = _service.GetExternalLogin(provider, redirectUrl);
+            return challengResult;
+        }
+
+        return RedirectToAction("Login");
+    }
+
+    [Route("external-login")]
+    public async Task<IActionResult> ExternalLogin()
+    {
+        var result = await _service.ExternalLoginAsync();
+
+        if (result)
+            //return RedirectToAction("Success");
+            return RedirectToAction("Index", "Home", new { area = "" });
+
+        return RedirectToAction("Login");
+    }
+
+    [Route("success")]
+    public IActionResult Success()
+    {
         return View();
     }
 

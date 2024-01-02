@@ -4,9 +4,7 @@ namespace MyBlog.Services;
 
 public interface IPostsService
 {
-    Task<List<Post>?> ShowPostsAsync(int currentPage);
-
-    int NumberOfPages();
+    Task<List<Post>?> GetAllPostsAsync();
 
     Task<Post?> FindPostByIdAsync(int id);
 
@@ -17,4 +15,8 @@ public interface IPostsService
     Task<bool> DeletePostAsync(int id);
 
     Task<List<Post>> SearchPostsAsync(string keyword);
+
+    string SetFileName(IFormFile file);
+
+    Task UploadImageAsync(IFormFile file);
 }
